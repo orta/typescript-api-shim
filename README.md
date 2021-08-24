@@ -13,7 +13,7 @@ const code = `const hello: string = "world"`
 const js = shim.toJS(code)
 ```
 
-With any version of TypeScript. 
+With any version of TypeScript. I'd like to also get consistent error messages, line numbers etc.
 
 #### Contribute
 
