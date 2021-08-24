@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "Orta Therox",
   "license": "ISC",
-  "dependencies": {
+  "devDependencies": {
     "expect": "^27.0.6",
     "ts-08": "npm:typescript@0.8.3",
     "ts-09": "npm:typescript@0.9.7",
