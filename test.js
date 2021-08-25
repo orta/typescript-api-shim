@@ -13,13 +13,24 @@ const versions = Object.keys(pkg.devDependencies)
 const skip = ["ts-13"]
 
 versions.forEach(v => {
-    if(skip.includes(v)) return
-    console.log(v)
-    const brokenCode = `v ar abc = 123`
-    const ts = require(v)
+    delete globalThis.TypeScript
+
+    if (!v.includes("ts-")) return
+    if (skip.includes(v)) return
+
+    console.log(`Version: ${v}`)
+    let ts = require(v) 
+    if (Object.keys(ts).length === 0) ts = globalThis.TypeScript
+
+    console.log(Object.keys(ts).length)
+    // if(Object.keys(ts).length ===0) {
+        //     console.log(ts)
+        // }
+        expect(ts).toBeDefined()
+        
+        const brokenCode = `v ar abc = 123`
+    // const shimmed = createTSShim(ts)
     
-    const shimmed = createTSShim(ts)
-    
-    expect(shimmed.version).not.toBeUndefined()
+    // expect(shimmed.version).toBeDefined()
 
 })
