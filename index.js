@@ -5,7 +5,7 @@ const createTSShim = (ts) => {
 
     return {
         version,
-        toJS: () => ""
+        toJS: (code) => transpile(ts, code)
     }
 
 } 
@@ -13,6 +13,10 @@ const createTSShim = (ts) => {
 function getVersion(ts) {
     const keys = Object.keys(ts)
     
+}
+
+function transpile(ts, code) {
+    return ts.transpile(code)
 }
 
 module.exports = {
