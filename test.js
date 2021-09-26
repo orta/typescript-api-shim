@@ -39,4 +39,21 @@ ${transpiled}
 `)
     expect(transpiled).not.toBe(undefined)
 
+    const { diagnostics, outputText } = shimmed.compile(brokenCode)
+    console.log(`
+--------
+compiled
+--------
+
+${outputText}
+
+-----------
+diagnostics
+-----------
+
+${diagnostics}
+`)
+expect(outputText).not.toBe(undefined)
+expect(diagnostics).not.toBe(undefined)
+
 })
