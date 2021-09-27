@@ -51,9 +51,8 @@ ${outputText}
 diagnostics
 -----------
 
-${diagnostics}
+${diagnostics.map(diagnostic => `${diagnostic.messageText}, ${diagnostic.category}, ${diagnostic.code}, ${diagnostic.start}, ${diagnostic.length}`).join('\n')}
 `)
-expect(outputText).not.toBe(undefined)
-expect(diagnostics).not.toBe(undefined)
-
+    expect(outputText).not.toBe(undefined)
+    expect(diagnostics).not.toBe(undefined)
 })

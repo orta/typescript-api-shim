@@ -1,8 +1,6 @@
 const createTSShim = (ts) => {
     const version = ts.version || getVersion(ts)
 
-
-
     return {
         version,
         toJS: (code) => transpile(ts, code),
@@ -17,15 +15,13 @@ function getVersion(ts) {
 }
 
 function transpile(ts, code) {
-    // Object.keys(ts).forEach(key => console.log(key))
-    // throw new Error('dfs')
     return ts.transpile(code)
 }
 
 function compile(ts, code) {
     var diagnostics = []
     var options = {
-        target: 1 /* ES5 */,
+        target: 'es6',
         module: 0 /* None */,
         // Filename can be non-ts file.
         allowNonTsExtensions: true,
@@ -65,7 +61,13 @@ function compile(ts, code) {
     };
     var program = ts.createProgram([inputFileName], options, compilerHost);
     if (diagnostics) {
-        diagnostics.push.apply(diagnostics, program.getCompilerOptionsDiagnostics());
+        if (program.getCompilerOptionsDiagnostics) {
+            diagnostics.push.apply(diagnostics, program.getCompilerOptionsDiagnostics());
+        } else if (program.getSyntacticDiagnostics && program.getOptionsDiagnostics) {
+            diagnostics = [];
+            ts.addRange(/*to*/ diagnostics, /*from*/ program.getSyntacticDiagnostics(sourceFile));
+            ts.addRange(/*to*/ diagnostics, /*from*/ program.getOptionsDiagnostics());
+        }
     }
     // Emit
     let emitResult = program.emit();
