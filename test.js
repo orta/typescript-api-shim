@@ -22,15 +22,37 @@ versions.forEach(v => {
     let ts = require(v) 
     if (Object.keys(ts).length === 0) ts = globalThis.TypeScript
 
-    console.log(Object.keys(ts).length)
-    // if(Object.keys(ts).length ===0) {
-        //     console.log(ts)
-        // }
-        expect(ts).toBeDefined()
-        
-        const brokenCode = `v ar abc = 123`
-    // const shimmed = createTSShim(ts)
+    expect(ts).toBeDefined()
     
-    // expect(shimmed.version).toBeDefined()
+    const brokenCode = `v ar abc = 123`
+    const shimmed = createTSShim(ts)
+    
+    expect(shimmed.version).toBeDefined()
 
+    const transpiled = shimmed.toJS(brokenCode)
+    console.log(`
+----------
+transpiled
+----------
+
+${transpiled}
+`)
+    expect(transpiled).not.toBe(undefined)
+
+    const { diagnostics, outputText } = shimmed.compile(brokenCode)
+    console.log(`
+--------
+compiled
+--------
+
+${outputText}
+
+-----------
+diagnostics
+-----------
+
+${diagnostics.map(diagnostic => `${diagnostic.messageText}, ${diagnostic.category}, ${diagnostic.code}, ${diagnostic.start}, ${diagnostic.length}`).join('\n')}
+`)
+    expect(outputText).not.toBe(undefined)
+    expect(diagnostics).not.toBe(undefined)
 })
